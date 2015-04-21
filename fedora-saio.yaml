@@ -39,20 +39,12 @@
 
     - file: path=/srv  state=directory
 
-    - command: /usr/bin/truncate -s 1GB /srv/swift-disk creates=/srv/swift-disk
+    - command: /usr/bin/truncate -s 1GB /srv/swift-disk-{{item}} creates=/srv/swift-disk-{{item}}
+      with_sequence: start=1 end=4
 
-    - command: /usr/sbin/mkfs.xfs /srv/swift-disk
+    - command: /usr/sbin/mkfs.xfs /srv/swift-disk-{{item}}
+      with_sequence: start=1 end=4
       ignore_errors: yes
-
-    - file: path=/mnt/sdb1  state=directory
-
-    - mount: src=/srv/swift-disk name=/mnt/sdb1 fstype=xfs opts=loop,noatime,nodiratime,nobarrier,logbufs=8 state=mounted
-
-    - file: path=/mnt/sdb1/{{ item }} state=directory owner=swift group=swift
-      with_sequence: start=1 end=4
-
-    - file: src=/mnt/sdb1/{{ item }} path=/srv/{{ item }} state=link
-      with_sequence: start=1 end=4
 
     - file: path={{ item }} state=directory owner=swift group=swift
       with_items:
@@ -65,6 +57,12 @@
         - /var/cache/swift2
         - /var/cache/swift3
         - /var/cache/swift4
+
+    - mount: src=/srv/swift-disk-{{item}} name=/srv/{{item}}/node/sdb{{item}} fstype=xfs opts=loop,noatime,nodiratime,nobarrier,logbufs=8 state=mounted
+      with_sequence: start=1 end=4
+
+    - file: path=/srv/{{item}}/node/sdb{{item}} state=directory owner=swift group=swift
+      with_sequence: start=1 end=4
 
     - script: files/bin/remakerings creates=/etc/swift/object.ring.gz
 
