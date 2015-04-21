@@ -1,0 +1,27 @@
+- hosts: all
+  remote_user: fedora
+  sudo: True
+
+  tasks:
+    - yum: name={{item}}
+      with_items:
+        - gcc
+        - gcc-c++
+        - python-setuptools
+        - python-devel
+        - libevent-devel
+        - python-pip
+        - zeromq3-devel
+        - python-argparse
+        - Cython
+        - python-gevent
+
+    - pip: name={{item}}
+      with_items:
+        - Distribute
+        - pyzmq
+        - gevent-zeromq
+        - 'http://python-statlib.googlecode.com/files/statlib-1.1.tar.gz'
+        - ssbench
+
+    - copy: src=files/ssbench_small_scenario.json dest=/home/fedora/ssbench_small_scenario.json

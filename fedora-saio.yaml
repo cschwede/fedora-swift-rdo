@@ -1,0 +1,83 @@
+- hosts: all
+  remote_user: fedora
+  sudo: True
+
+  tasks:
+    - yum: name={{item}}
+      with_items:
+        - xfsprogs
+        - openstack-utils
+        - python-swiftclient
+        - memcached
+        - rsync
+        - xinetd
+        - openstack-swift
+        - openstack-swift-proxy
+        - openstack-swift-object
+        - openstack-swift-container
+        - openstack-swift-account
+        - graphite-web
+        - graphite-web-selinux
+        - python-carbon
+        - python-whisper
+        - statsd
+        - collectd
+
+    - lineinfile: dest=/etc/selinux/config regexp=^SELINUX= line=SELINUX=Permissive
+
+    - command: /usr/sbin/setenforce Permissive
+
+    - synchronize: src=files/etc/ dest=/etc/ recursive=yes archive=no
+
+    - file: path=/opt/graphite/storage/ state=directory owner=apache group=apache
+
+    - command: /usr/lib/python2.7/site-packages/graphite/manage.py syncdb --noinput creates=/opt/graphite/storage/graphite.db
+
+    - file: path=/opt/graphite/storage/graphite.db owner=apache group=apache
+
+    - file: path=/etc/swift/ state=directory owner=swift group=swift recurse=yes
+
+    - file: path=/srv  state=directory
+
+    - command: /usr/bin/truncate -s 1GB /srv/swift-disk creates=/srv/swift-disk
+
+    - command: /usr/sbin/mkfs.xfs /srv/swift-disk
+      ignore_errors: yes
+
+    - file: path=/mnt/sdb1  state=directory
+
+    - mount: src=/srv/swift-disk name=/mnt/sdb1 fstype=xfs opts=loop,noatime,nodiratime,nobarrier,logbufs=8 state=mounted
+
+    - file: path=/mnt/sdb1/{{ item }} state=directory owner=swift group=swift
+      with_sequence: start=1 end=4
+
+    - file: src=/mnt/sdb1/{{ item }} path=/srv/{{ item }} state=link
+      with_sequence: start=1 end=4
+
+    - file: path={{ item }} state=directory owner=swift group=swift
+      with_items:
+        - /srv/1/node/sdb1
+        - /srv/2/node/sdb2
+        - /srv/3/node/sdb3
+        - /srv/4/node/sdb4
+        - /var/run/swift
+        - /var/cache/swift
+        - /var/cache/swift2
+        - /var/cache/swift3
+        - /var/cache/swift4
+
+    - script: files/bin/remakerings creates=/etc/swift/object.ring.gz
+
+    - copy: src=files/graphite_overview.html dest=/usr/share/graphite/webapp/content/graphite_overview.html
+
+    - service: name={{item}} state=started
+      with_items:
+        - memcached
+        - xinetd
+        - rsyncd
+        - statsd
+        - carbon-cache
+        - httpd
+        - collectd
+
+    - command: /usr/bin/swift-init start all creates=/var/run/swift/proxy-server.pid
