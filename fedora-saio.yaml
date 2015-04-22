@@ -66,7 +66,9 @@
 
     - script: files/bin/remakerings creates=/etc/swift/object.ring.gz
 
-    - copy: src=files/graphite_overview.html dest=/usr/share/graphite/webapp/content/graphite_overview.html
+    - copy: src=files/dashboard.sql dest=/tmp/dashboard.sql
+
+    - shell: sqlite3 /opt/graphite/storage/graphite.db < /tmp/dashboard.sql ; exit 0
 
     - service: name={{item}} state=started
       with_items:

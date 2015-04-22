@@ -21,7 +21,7 @@ Swift all in one playbook
 
 5. There is also an example Graphite overview available at
 
-    http://<IP address>/content/graphite_overview.html
+    http://<IP address>/dashboard/default
 
 ssbench playbook
 ----------------
