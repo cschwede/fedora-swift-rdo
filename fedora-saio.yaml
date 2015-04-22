@@ -28,6 +28,10 @@
 
     - command: /usr/sbin/setenforce Permissive
 
+    - copy: src=filesetc/sysctl.d/swift.conf dest=/etc/sysctl.d/swift.conf
+
+    - command: /usr/sbin/sysctl -p
+
     - template: dest=/etc/swift/{{ item }} src=files/etc/swift/{{ item }} owner=swift group=swift
       with_items:
         - object-server/1.conf
