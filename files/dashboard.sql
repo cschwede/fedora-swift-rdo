@@ -147,6 +147,17 @@ INSERT INTO "dashboard_dashboard" VALUES('default','
                 "title": "Object Replicator",
                 "until": "now"
             }
+        ],
+        [
+            "",
+            {
+                "from": "-4hours",
+                "target": [
+                    "aliasSub(*.counters.*.proxy-server.*.handoff_count.count, \"stats.counters.(.*).proxy-server.(.*).handoff_count.count\", \"\\1 \\2\")"
+                ],
+                "title": "Handoff Requests",
+                "until": "now"
+            }
         ]
     ],
     "name": "default",
