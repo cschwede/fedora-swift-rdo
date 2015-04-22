@@ -3,6 +3,7 @@
   sudo: True
 
   tasks:
+    - include_vars: settings.yaml
     - yum: name={{item}}
       with_items:
         - xfsprogs
@@ -27,7 +28,24 @@
 
     - command: /usr/sbin/setenforce Permissive
 
-    - synchronize: src=files/etc/ dest=/etc/ recursive=yes archive=no
+    - template: dest=/etc/swift/{{ item }} src=files/etc/swift/{{ item }} owner=swift group=swift
+      with_items:
+        - object-server/1.conf
+        - object-server/2.conf
+        - object-server/3.conf
+        - object-server/4.conf
+        - container-server/1.conf
+        - container-server/2.conf
+        - container-server/3.conf
+        - container-server/4.conf
+        - account-server/1.conf
+        - account-server/2.conf
+        - account-server/3.conf
+        - account-server/4.conf
+        - container-reconciler.conf
+        - object-expirer.conf
+        - proxy-server.conf
+        - swift.conf
 
     - file: path=/etc/swift/{{item}} state=absent
       with_items:
