@@ -85,6 +85,11 @@
         - /var/cache/swift2
         - /var/cache/swift3
         - /var/cache/swift4
+        # Make sure at least one quarantined dir exists
+        # otherwise collectd won't report anything
+        - /srv/1/node/sdb1/quarantined/accounts
+        - /srv/1/node/sdb1/quarantined/containers
+        - /srv/1/node/sdb1/quarantined/objects
 
     - mount: src=/srv/swift-disk-{{item}} name=/srv/{{item}}/node/sdb{{item}} fstype=xfs opts=loop,noatime,nodiratime,nobarrier,logbufs=8 state=mounted
       with_sequence: start=1 end=4
