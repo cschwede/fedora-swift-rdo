@@ -158,6 +158,30 @@ INSERT INTO "dashboard_dashboard" VALUES('default','
                 "title": "Handoff Requests",
                 "until": "now"
             }
+        ],
+        [
+            "",
+            {
+                "from": "-4hours",
+                "target": [
+                    "alias(sum(stats.counters.*.*.*.object-replicator.partition.update.count.*.count), \"update\")",
+                    "alias(sum(stats.counters.*.*.*.object-replicator.partition.delete.count.*.count), \"delete\")"
+                ],
+                "title": "Replicated partitions",
+                "until": "now"
+            }
+        ],
+        [
+            "",
+            {
+                "from": "-4hours",
+                "target": [
+                    "highestCurrent(aliasSub(*.counters.proxy1.proxy-server.*.*.5*.xfer.rate, \".*.proxy-server.(.*)\\.xfer.rate\", \"\\1\"), 3)",
+                    "highestCurrent(aliasSub(*.counters.proxy1.proxy-server.*.*.4*.xfer.rate, \".*.proxy-server.(.*)\\.xfer.rate\", \"\\1\"), 3)"
+                ],
+                "title": "Error rate",
+                "until": "now"
+            }
         ]
     ],
     "name": "default",
