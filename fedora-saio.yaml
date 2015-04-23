@@ -28,7 +28,7 @@
 
     - command: /usr/sbin/setenforce Permissive
 
-    - copy: src=filesetc/sysctl.d/swift.conf dest=/etc/sysctl.d/swift.conf
+    - copy: src=files/etc/sysctl.d/swift.conf dest=/etc/sysctl.d/swift.conf
 
     - command: /usr/sbin/sysctl -p
 
@@ -99,9 +99,9 @@
 
     - script: files/bin/remakerings creates=/etc/swift/object.ring.gz
 
-    - copy: src=files/dashboard.sql dest=/tmp/dashboard.sql
+    - copy: src=files/dashboard.json dest=/tmp/dashboard.json
 
-    - shell: sqlite3 /opt/graphite/storage/graphite.db < /tmp/dashboard.sql ; exit 0
+    - shell: curl -X POST --data-urlencode state@dashboard.json http://127.0.0.1/dashboard/save/default
 
     - service: name={{item}} state=started
       with_items:
