@@ -1,6 +1,6 @@
 {
   graphitePort: 2003
-, graphiteHost: "localhost"
+, graphiteHost: "{{graphite_host}}"
 , port: 8125
 , backends: [ "./backends/graphite" ]
 , graphite: {
