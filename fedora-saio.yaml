@@ -85,6 +85,8 @@
 
     - script: files/bin/remakerings creates=/etc/swift/object.ring.gz
 
+    - template: dest=/etc/carbon/storage-schemas.conf src=files/etc/carbon/storage-schemas.conf
+
     - copy: src=files/dashboard.json dest=/tmp/dashboard.json
 
     - shell: curl -X POST --data-urlencode state@dashboard.json http://127.0.0.1/dashboard/save/default
