@@ -87,6 +87,12 @@
 
     - template: dest=/etc/carbon/storage-schemas.conf src=files/etc/carbon/storage-schemas.conf
 
+    - template: dest=/etc/statsd/config.js src=files/etc/statsd/config.js
+
+    - template: dest=/etc/collectd.conf src=files/etc/collectd.conf
+      notify:
+        - restart collectd
+
     - copy: src=files/dashboard.json dest=/tmp/dashboard.json
 
     - shell: curl -X POST --data-urlencode state@dashboard.json http://127.0.0.1/dashboard/save/default
@@ -102,3 +108,7 @@
         - collectd
 
     - command: /usr/bin/swift-init start all creates=/var/run/swift/proxy-server.pid
+
+  handlers:
+    - name: restart collectd
+      service: name=collectd state=restarted
