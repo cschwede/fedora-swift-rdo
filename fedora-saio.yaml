@@ -16,11 +16,6 @@
         - openstack-swift-object
         - openstack-swift-container
         - openstack-swift-account
-        - graphite-web
-        - graphite-web-selinux
-        - python-carbon
-        - python-whisper
-        - statsd
         - collectd
 
     - lineinfile: dest=/etc/selinux/config regexp=^SELINUX= line=SELINUX=Permissive
@@ -79,38 +74,15 @@
 
     - script: files/bin/remakerings creates=/etc/swift/object.ring.gz
 
-    - template: dest=/etc/carbon/storage-schemas.conf src=files/etc/carbon/storage-schemas.conf
-
-    - template: dest=/etc/statsd/config.js src=files/etc/statsd/config.js
-
     - template: dest=/etc/collectd.conf src=files/etc/collectd.conf
       notify:
         - restart collectd
-
-    - copy: src=files/dashboard.json dest=/tmp/dashboard.json
-
-    - template: dest=/etc/graphite-web/local_settings.py src=files/etc/graphite-web/local_settings.py
-
-    - file: path=/opt/graphite/storage/ state=directory owner=apache group=apache
-
-    - command: /usr/lib/python2.7/site-packages/graphite/manage.py syncdb --noinput creates=/opt/graphite/storage/graphite.db
-
-    - file: path=/opt/graphite/storage/graphite.db owner=apache group=apache
 
     - service: name={{item}} state=started
       with_items:
         - memcached
         - xinetd
         - rsyncd
-        - statsd
-        - carbon-cache
-        - httpd
         - collectd
 
-    - shell: curl -X POST --data-urlencode state@/tmp/dashboard.json http://127.0.0.1/dashboard/save/default
-
     - command: /usr/bin/swift-init start all creates=/var/run/swift/proxy-server.pid
-
-  handlers:
-    - name: restart collectd
-      service: name=collectd state=restarted
