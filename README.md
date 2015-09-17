@@ -15,7 +15,7 @@ Swift all in one playbook
 
 3. Login and verify that the following command works:
 
-    swift -U test:tester -K test -A http://127.0.0.1:8080/auth/v1.0 list
+    swift -U test:tester -K testing -A http://127.0.0.1:8080/auth/v1.0 list
 
 4. You can access the Graphite instance on port 80 in your browser.
 
