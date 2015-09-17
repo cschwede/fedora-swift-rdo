@@ -7,11 +7,11 @@ Swift all in one playbook
 1. Provide a running Fedora 21 instance with key-based SSH authentication. Ensure that the following command
    works without providing a password:
 
-    ssh -l <username> "<IP address>"
+    ssh -l username IP_address
 
 2. Apply the SAIO playbook:
 
-    ansible-playbook -i "<IP address>," -u <username> fedora-saio.yaml
+    ansible-playbook -i "IP_address," -u username fedora-saio.yaml
 
 3. Login and verify that the following command works:
 
