@@ -91,3 +91,7 @@
         - collectd
 
     - command: /usr/bin/swift-init start all creates=/var/run/swift/proxy-server.pid
+
+  handlers:
+    - name: restart collectd
+      service: name=collectd state=restarted
