@@ -70,11 +70,18 @@
         - /var/cache/swift2
         - /var/cache/swift3
         - /var/cache/swift4
-        # Make sure at least one quarantined dir exists
-        # otherwise collectd won't report anything
         - /srv/1/node/sdb1/quarantined/accounts
         - /srv/1/node/sdb1/quarantined/containers
         - /srv/1/node/sdb1/quarantined/objects
+        - /srv/2/node/sdb2/quarantined/accounts
+        - /srv/2/node/sdb2/quarantined/containers
+        - /srv/2/node/sdb2/quarantined/objects
+        - /srv/3/node/sdb3/quarantined/accounts
+        - /srv/3/node/sdb3/quarantined/containers
+        - /srv/3/node/sdb3/quarantined/objects
+        - /srv/4/node/sdb4/quarantined/accounts
+        - /srv/4/node/sdb4/quarantined/containers
+        - /srv/4/node/sdb4/quarantined/objects
 
     - script: files/bin/remakerings creates=/etc/swift/object.ring.gz
 
