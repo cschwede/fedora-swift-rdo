@@ -23,6 +23,8 @@ Swift all in one playbook
 
     http://<IP address>/dashboard/default
 
+You can change users.conf if you want to use different users and passwords.
+
 ssbench playbook
 ----------------
 
