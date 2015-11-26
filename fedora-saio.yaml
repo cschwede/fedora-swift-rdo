@@ -20,7 +20,6 @@
         - openstack-swift-object
         - openstack-swift-container
         - openstack-swift-account
-        - collectd
 
     - lineinfile: dest=/etc/selinux/config regexp=^SELINUX= line=SELINUX=Permissive
 
@@ -70,34 +69,13 @@
         - /var/cache/swift2
         - /var/cache/swift3
         - /var/cache/swift4
-        - /srv/1/node/sdb1/quarantined/accounts
-        - /srv/1/node/sdb1/quarantined/containers
-        - /srv/1/node/sdb1/quarantined/objects
-        - /srv/2/node/sdb2/quarantined/accounts
-        - /srv/2/node/sdb2/quarantined/containers
-        - /srv/2/node/sdb2/quarantined/objects
-        - /srv/3/node/sdb3/quarantined/accounts
-        - /srv/3/node/sdb3/quarantined/containers
-        - /srv/3/node/sdb3/quarantined/objects
-        - /srv/4/node/sdb4/quarantined/accounts
-        - /srv/4/node/sdb4/quarantined/containers
-        - /srv/4/node/sdb4/quarantined/objects
 
     - script: files/bin/remakerings {{ block_device }} creates=/etc/swift/object.ring.gz
-
-    - template: dest=/etc/collectd.conf src=files/etc/collectd.conf
-      notify:
-        - restart collectd
 
     - service: name={{item}} state=started
       with_items:
         - memcached
         - xinetd
         - rsyncd
-        - collectd
 
     - command: /usr/bin/swift-init start all creates=/var/run/swift/proxy-server.pid
-
-  handlers:
-    - name: restart collectd
-      service: name=collectd state=restarted
