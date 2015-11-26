@@ -61,10 +61,10 @@
 
     - file: path={{ item }} state=directory owner=swift group=swift
       with_items:
-        - /srv/1/node/sdb1
-        - /srv/2/node/sdb2
-        - /srv/3/node/sdb3
-        - /srv/4/node/sdb4
+        - /srv/1/node/{{ block_device }}1
+        - /srv/2/node/{{ block_device }}2
+        - /srv/3/node/{{ block_device }}3
+        - /srv/4/node/{{ block_device }}4
         - /var/run/swift
         - /var/cache/swift
         - /var/cache/swift2
@@ -83,7 +83,7 @@
         - /srv/4/node/sdb4/quarantined/containers
         - /srv/4/node/sdb4/quarantined/objects
 
-    - script: files/bin/remakerings creates=/etc/swift/object.ring.gz
+    - script: files/bin/remakerings {{ block_device }} creates=/etc/swift/object.ring.gz
 
     - template: dest=/etc/collectd.conf src=files/etc/collectd.conf
       notify:
