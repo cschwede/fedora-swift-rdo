@@ -72,10 +72,30 @@
 
     - script: files/bin/remakerings {{ block_device }} creates=/etc/swift/object.ring.gz
 
-    - service: name={{item}} state=started
+    - service: name={{item}} state=started enabled=yes
       with_items:
         - memcached
         - xinetd
         - rsyncd
+
+    # Make sure Swift services are disabled. Swift must be started with
+    # swift-init (see below) to make use of the [1..4].conf files
+    - service: name={{item}} state=stopped enabled=no
+      with_items:
+        - openstack-swift-account-auditor
+        - openstack-swift-account-reaper
+        - openstack-swift-account-replicator
+        - openstack-swift-account
+        - openstack-swift-container-auditor
+        - openstack-swift-container-reconciler
+        - openstack-swift-container-replicator
+        - openstack-swift-container
+        - openstack-swift-container-updater
+        - openstack-swift-object-auditor
+        - openstack-swift-object-expirer
+        - openstack-swift-object-replicator
+        - openstack-swift-object
+        - openstack-swift-object-updater
+        - openstack-swift-proxy
 
     - command: /usr/bin/swift-init start all creates=/var/run/swift/proxy-server.pid
