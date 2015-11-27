@@ -2,9 +2,7 @@
   sudo: True
 
   tasks:
-    - yum: name=http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm state=present
-      when: ansible_distribution == 'RedHat' or ansible_distribution == 'CentOS'
-    - yum: name=https://repos.fedorapeople.org/repos/openstack/openstack-kilo/rdo-release-kilo-1.noarch.rpm state=present
+    - yum: name=https://repos.fedorapeople.org/repos/openstack/openstack-liberty/rdo-release-liberty-2.noarch.rpm state=present
       when: ansible_distribution == 'RedHat' or ansible_distribution == 'CentOS'
 
     - include_vars: settings.yaml
