@@ -8,6 +8,8 @@
     - dnf: name=yum  # Workaround
       when: ansible_distribution == 'Fedora' and ansible_distribution_version >= 22
 
+    - get_url: url=https://grafanarel.s3.amazonaws.com/builds/grafana-2.5.0-1.x86_64.rpm dest=/root/grafana-2.5.0-1.x86_64.rpm mode=0440
+
     - yum: name={{item}}
       with_items:
         - memcached
@@ -16,6 +18,7 @@
         - python-whisper
         - statsd
         - collectd
+        - /root/grafana-2.5.0-1.x86_64.rpm
 
     - lineinfile: dest=/etc/selinux/config regexp=^SELINUX= line=SELINUX=Permissive
 
@@ -41,5 +44,6 @@
         - statsd
         - carbon-cache
         - httpd
+        - grafana-server
 
     - shell: curl -X POST --data-urlencode state@/tmp/dashboard.json http://127.0.0.1/dashboard/save/default
