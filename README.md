@@ -4,26 +4,35 @@ ansible-fedora-saio
 Swift all in one playbook
 -------------------------
 
-1. Provide a running Fedora 21 instance with key-based SSH authentication. Ensure that the following command
+1. Provide a running RHEL, CentOS or Fedora instance with key-based SSH authentication. Ensure that the following command
    works without providing a password:
 
     ssh -l username IP_address
 
 2. Apply the SAIO playbook:
 
-    ansible-playbook -i "IP_address," -u username fedora-saio.yaml
+    ansible-playbook -i "IP_address," -u username saio.yaml
+
+You can change users.conf in advance if you want to use different users and passwords.
 
 3. Login and verify that the following command works:
 
     swift -U test:tester -K testing -A http://127.0.0.1:8080/auth/v1.0 list
 
-4. You can access the Graphite instance on port 80 in your browser.
 
-5. There is also an example Graphite overview available at
+statsd/Graphite/Grafana playbook
+--------------------------------
 
-    http://<IP address>/dashboard/default
+1. Apply the SAIO playbook:
 
-You can change users.conf if you want to use different users and passwords.
+    ansible-playbook -i "IP_address," -u username statsd.yaml
+
+2. You can access Grafana on port 3000.
+
+3. There is an example Grafana dashboard available at
+
+    http://<IP address>:3000/dashboard/db/proxy
+
 
 ssbench playbook
 ----------------
