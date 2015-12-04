@@ -32,6 +32,8 @@
 
     - file: path=/var/lib/graphite-web/graphite.db owner=apache group=apache
 
+    - copy: src=files/datasource.json dest=/tmp/datasource.json
+
     - copy: src=files/dashboard.json dest=/tmp/dashboard.json
 
     - service: name={{item}} state=started
@@ -42,4 +44,8 @@
         - httpd
         - grafana-server
 
-    - shell: curl -X POST --data-urlencode state@/tmp/dashboard.json http://127.0.0.1/dashboard/save/default
+    - shell: 'curl "http://admin:admin@localhost:3000/api/datasources" -X POST -H "Content-Type: application/json" -T /tmp/datasource.json'
+      ignore_errors: True
+
+    - shell: 'curl "http://admin:admin@localhost:3000/api/dashboards/db" -X POST -H "Content-Type: application/json" -T /tmp/dashboard.json'
+      ignore_errors: True
