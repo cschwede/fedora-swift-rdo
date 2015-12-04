@@ -7,6 +7,9 @@
     - dnf: name=yum  # Workaround
       when: ansible_distribution == 'Fedora' and ansible_distribution_version >= 22
 
+    - yum: name=epel-release
+      when: ansible_distribution == 'RedHat' or ansible_distribution == 'CentOS'
+
     - get_url: url=https://grafanarel.s3.amazonaws.com/builds/grafana-2.5.0-1.x86_64.rpm dest=/root/grafana-2.5.0-1.x86_64.rpm mode=0440
 
     - yum: name={{item}}
