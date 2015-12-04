@@ -4,6 +4,10 @@
 
   tasks:
     - include_vars: settings.yaml
+
+    - dnf: name=yum  # Workaround
+      when: ansible_distribution == 'Fedora' and ansible_distribution_version >= 22
+
     - yum: name={{item}}
       with_items:
         - memcached
