@@ -35,11 +35,11 @@
 
     - copy: src=files/dashboard.json dest=/tmp/dashboard.json
 
-    - shell: curl -X POST --data-urlencode state@/tmp/dashboard.json http://127.0.0.1/dashboard/save/default
-
     - service: name={{item}} state=started
       with_items:
         - memcached
         - statsd
         - carbon-cache
         - httpd
+
+    - shell: curl -X POST --data-urlencode state@/tmp/dashboard.json http://127.0.0.1/dashboard/save/default
