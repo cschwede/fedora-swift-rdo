@@ -147,7 +147,7 @@
                         ],
                         "timeFrom": null,
                         "timeShift": null,
-                        "title": "Requests/second",
+                        "title": "Requests",
                         "tooltip": {
                             "shared": true,
                             "value_type": "cumulative"
@@ -161,7 +161,8 @@
                         ]
                     }
                 ],
-                "title": "Row"
+                "showTitle": true,
+                "title": "Proxy"
             },
             {
                 "collapse": false,
@@ -203,32 +204,36 @@
                         "lines": true,
                         "linewidth": 2,
                         "links": [],
-                        "nullPointMode": "null as zero",
+                        "nullPointMode": "connected",
                         "percentage": false,
                         "pointradius": 5,
                         "points": false,
                         "renderer": "flot",
                         "seriesOverrides": [],
-                        "span": 6,
+                        "span": 4,
                         "stack": false,
                         "steppedLine": false,
                         "targets": [
                             {
                                 "refId": "A",
-                                "target": "aliasByNode(stats.timers.*.proxy-server.object.GET.200.timing.mean_90, 5)"
+                                "target": "aliasByNode(localhost.cpu.*.cpu.idle, 4)"
                             },
                             {
                                 "refId": "B",
-                                "target": "aliasByNode(stats.timers.*.proxy-server.object.PUT.201.timing.mean_90, 5)"
+                                "target": "aliasByNode(localhost.cpu.*.cpu.user, 4)"
                             },
                             {
                                 "refId": "C",
-                                "target": "aliasByNode(stats.timers.*.proxy-server.object.DELETE.204.timing.mean_90, 5)"
+                                "target": "aliasByNode(localhost.cpu.*.cpu.system, 4)"
+                            },
+                            {
+                                "refId": "D",
+                                "target": "aliasByNode(localhost.cpu.*.cpu.wait, 4)"
                             }
                         ],
                         "timeFrom": null,
                         "timeShift": null,
-                        "title": "Timing",
+                        "title": "CPU",
                         "tooltip": {
                             "shared": true,
                             "value_type": "cumulative"
@@ -237,12 +242,137 @@
                         "x-axis": true,
                         "y-axis": true,
                         "y_formats": [
-                            "ms",
+                            "percent",
+                            "short"
+                        ]
+                    },
+                    {
+                        "aliasColors": {},
+                        "bars": false,
+                        "datasource": null,
+                        "editable": true,
+                        "error": false,
+                        "fill": 1,
+                        "grid": {
+                            "leftLogBase": 1,
+                            "leftMax": null,
+                            "leftMin": null,
+                            "rightLogBase": 1,
+                            "rightMax": null,
+                            "rightMin": null,
+                            "threshold1": null,
+                            "threshold1Color": "rgba(216, 200, 27, 0.27)",
+                            "threshold2": null,
+                            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+                        },
+                        "id": 6,
+                        "legend": {
+                            "avg": false,
+                            "current": false,
+                            "max": false,
+                            "min": false,
+                            "show": true,
+                            "total": false,
+                            "values": false
+                        },
+                        "lines": true,
+                        "linewidth": 2,
+                        "links": [],
+                        "nullPointMode": "connected",
+                        "percentage": false,
+                        "pointradius": 5,
+                        "points": false,
+                        "renderer": "flot",
+                        "seriesOverrides": [],
+                        "span": 4,
+                        "stack": false,
+                        "steppedLine": false,
+                        "targets": [
+                            {
+                                "refId": "A",
+                                "target": "aliasByNode(localhost.load.load.*, 3)"
+                            }
+                        ],
+                        "timeFrom": null,
+                        "timeShift": null,
+                        "title": "Load",
+                        "tooltip": {
+                            "shared": true,
+                            "value_type": "cumulative"
+                        },
+                        "type": "graph",
+                        "x-axis": true,
+                        "y-axis": true,
+                        "y_formats": [
+                            "short",
+                            "short"
+                        ]
+                    },
+                    {
+                        "aliasColors": {},
+                        "bars": false,
+                        "datasource": null,
+                        "editable": true,
+                        "error": false,
+                        "fill": 1,
+                        "grid": {
+                            "leftLogBase": 1,
+                            "leftMax": null,
+                            "leftMin": null,
+                            "rightLogBase": 1,
+                            "rightMax": null,
+                            "rightMin": null,
+                            "threshold1": null,
+                            "threshold1Color": "rgba(216, 200, 27, 0.27)",
+                            "threshold2": null,
+                            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+                        },
+                        "id": 5,
+                        "legend": {
+                            "avg": false,
+                            "current": false,
+                            "max": false,
+                            "min": false,
+                            "show": true,
+                            "total": false,
+                            "values": false
+                        },
+                        "lines": true,
+                        "linewidth": 2,
+                        "links": [],
+                        "nullPointMode": "connected",
+                        "percentage": false,
+                        "pointradius": 5,
+                        "points": false,
+                        "renderer": "flot",
+                        "seriesOverrides": [],
+                        "span": 4,
+                        "stack": false,
+                        "steppedLine": false,
+                        "targets": [
+                            {
+                                "refId": "A",
+                                "target": "aliasByNode(localhost.interface.*.if_octets.*, 2)"
+                            }
+                        ],
+                        "timeFrom": null,
+                        "timeShift": null,
+                        "title": "Network",
+                        "tooltip": {
+                            "shared": true,
+                            "value_type": "cumulative"
+                        },
+                        "type": "graph",
+                        "x-axis": true,
+                        "y-axis": true,
+                        "y_formats": [
+                            "bytes",
                             "short"
                         ]
                     }
                 ],
-                "title": "New row"
+                "showTitle": true,
+                "title": "System"
             }
         ],
         "schemaVersion": 7,
@@ -283,8 +413,7 @@
             ]
         },
         "timezone": "browser",
-        "title": "Proxy",
-        "version": 54
+        "title": "Proxy"
     },
     "overwrite": true
 }
