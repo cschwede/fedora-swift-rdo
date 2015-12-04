@@ -36,6 +36,10 @@
 
     - copy: src=files/dashboard.json dest=/tmp/dashboard.json
 
+    - template: dest=/etc/collectd.conf src=files/etc/collectd.conf
+
+    - shell: /sbin/setsebool -P collectd_tcp_network_connect 1
+
     - service: name={{item}} state=started
       with_items:
         - memcached
@@ -43,6 +47,7 @@
         - carbon-cache
         - httpd
         - grafana-server
+        - collectd
 
     - shell: 'curl "http://admin:admin@localhost:3000/api/datasources" -X POST -H "Content-Type: application/json" -T /tmp/datasource.json'
       ignore_errors: True
