@@ -2,10 +2,11 @@
   sudo: True
 
   tasks:
+    - include_vars: settings.yaml
+
     - yum: name=https://repos.fedorapeople.org/repos/openstack/openstack-liberty/rdo-release-liberty-2.noarch.rpm state=present
       when: ansible_distribution == 'RedHat' or ansible_distribution == 'CentOS'
 
-    - include_vars: settings.yaml
     - yum: name={{item}}
       with_items:
         - openstack-utils
