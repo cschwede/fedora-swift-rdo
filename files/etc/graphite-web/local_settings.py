@@ -13,7 +13,7 @@ LOG_DIR = '/var/log/graphite-web/'
 
 DATABASES = {
     'default': {
-        'NAME': '/opt/graphite/storage/graphite.db',
+        'NAME': '/var/lib/graphite-web/graphite.db',
         'ENGINE': 'django.db.backends.sqlite3',
         'USER': '',
         'PASSWORD': '',

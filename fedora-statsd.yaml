@@ -19,21 +19,15 @@
         - collectd
         - /root/grafana-2.5.0-1.x86_64.rpm
 
-    - lineinfile: dest=/etc/selinux/config regexp=^SELINUX= line=SELINUX=Permissive
-
-    - command: /usr/sbin/setenforce Permissive
-
     - template: dest=/etc/carbon/storage-schemas.conf src=files/etc/carbon/storage-schemas.conf
 
     - template: dest=/etc/statsd/config.js src=files/etc/statsd/config.js
 
     - template: dest=/etc/graphite-web/local_settings.py src=files/etc/graphite-web/local_settings.py
 
-    - file: path=/opt/graphite/storage/ state=directory owner=apache group=apache
+    - command: /usr/lib/python2.7/site-packages/graphite/manage.py syncdb --noinput creates=/var/lib/graphite-web/graphite.db
 
-    - command: /usr/lib/python2.7/site-packages/graphite/manage.py syncdb --noinput creates=/opt/graphite/storage/graphite.db
-
-    - file: path=/opt/graphite/storage/graphite.db owner=apache group=apache
+    - file: path=/var/lib/graphite-web/graphite.db owner=apache group=apache
 
     - copy: src=files/dashboard.json dest=/tmp/dashboard.json
 

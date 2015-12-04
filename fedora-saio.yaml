@@ -23,10 +23,6 @@
         - openstack-swift-container
         - openstack-swift-account
 
-    - lineinfile: dest=/etc/selinux/config regexp=^SELINUX= line=SELINUX=Permissive
-
-    - command: /usr/sbin/setenforce Permissive
-
     - copy: src=files/etc/sysctl.d/swift.conf dest=/etc/sysctl.d/swift.conf
 
     - command: /usr/sbin/sysctl -p
