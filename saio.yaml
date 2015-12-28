@@ -46,6 +46,8 @@
         - proxy-server.conf
         - swift.conf
 
+    - template: dest=/etc/rsyncd.conf src=files/etc/rsyncd.conf
+
     - file: path=/etc/swift/{{item}} state=absent
       with_items:
         - account-server.conf
@@ -74,6 +76,7 @@
       with_items:
         - memcached
         - xinetd
+        - rsyncd
 
     # Make sure Swift services are disabled. Swift must be started with
     # swift-init (see below) to make use of the [1..4].conf files
